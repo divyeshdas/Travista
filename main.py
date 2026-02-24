@@ -4,7 +4,7 @@ from utils.dataloader import get_dataloader
 
 import torch
 from models.lstm import Encoder, Decoder, Seq2Seq
-from training.train_lstm import train_model
+from models.lstm_attention import Encoder, Decoder, Seq2Seq, Attention
 
 if __name__ == "__main__":
     # Load dataset

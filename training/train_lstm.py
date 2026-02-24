@@ -78,5 +78,5 @@ def train_model(model, train_loader, val_loader, pad_token, device, epochs=10):
         # Save best model
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
-            torch.save(model.state_dict(), "experiments/lstm_best.pth")
+            torch.save(model.state_dict(), "experiments/lstm_attention_best.pth")
             print("Model saved.")
