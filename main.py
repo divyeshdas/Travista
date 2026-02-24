@@ -1,9 +1,9 @@
 from utils.dataset import load_text_pairs, split_dataset
 from utils.tokenizer import get_tokenizers
 from utils.dataloader import get_dataloader
+from training.train_lstm import train_model
 
 import torch
-from models.lstm import Encoder, Decoder, Seq2Seq
 from models.lstm_attention import Encoder, Decoder, Seq2Seq, Attention
 
 if __name__ == "__main__":
@@ -32,12 +32,13 @@ if __name__ == "__main__":
     emb_dim = 256
     hidden_dim = 512
 
-    # Build LSTM model
+    # Build LSTM_Attention model
+    attention = Attention(hidden_dim)
+
     encoder = Encoder(input_dim, emb_dim, hidden_dim)
-    decoder = Decoder(output_dim, emb_dim, hidden_dim)
+    decoder = Decoder(output_dim, emb_dim, hidden_dim, attention)
 
     model = Seq2Seq(encoder, decoder, device).to(device)
-
     train_model(
     model,
     train_loader,
