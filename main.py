@@ -45,7 +45,7 @@ if __name__ == "__main__":
     val_loader,
     pad_token,
     device,
-    epochs=5
+    epochs=7
 )
 
     print("LSTM Model created successfully.")

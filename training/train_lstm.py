@@ -7,7 +7,7 @@ from tqdm import tqdm
 def train_model(model, train_loader, val_loader, pad_token, device, epochs=10):
 
     criterion = nn.CrossEntropyLoss(ignore_index=pad_token)
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(), lr=0.0005)
 
     best_val_loss = float("inf")
 
