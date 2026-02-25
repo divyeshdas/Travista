@@ -67,20 +67,31 @@ class TransformerModel(nn.Module):
     def generate_square_subsequent_mask(self, size):
         return torch.triu(torch.ones(size, size) * float("-inf"), diagonal=1)
 
-    def forward(self, src, tgt):
+def forward(self, src, tgt):
 
-        src_emb = self.src_embedding(src) * math.sqrt(self.d_model)
-        tgt_emb = self.tgt_embedding(tgt) * math.sqrt(self.d_model)
+    src_mask = None
 
-        src_emb = self.pos_encoder(src_emb)
-        tgt_emb = self.pos_decoder(tgt_emb)
+    tgt_mask = torch.triu(
+        torch.ones((tgt.size(1), tgt.size(1)), device=tgt.device) * float("-inf"),
+        diagonal=1
+    )
 
-        tgt_mask = self.generate_square_subsequent_mask(tgt.size(1)).to(src.device)
+    src_padding_mask = (src == 0)
+    tgt_padding_mask = (tgt == 0)
 
-        output = self.transformer(
-            src_emb,
-            tgt_emb,
-            tgt_mask=tgt_mask
-        )
+    src_emb = self.src_embedding(src) * math.sqrt(self.d_model)
+    tgt_emb = self.tgt_embedding(tgt) * math.sqrt(self.d_model)
 
-        return self.fc_out(output)
+    src_emb = self.pos_encoder(src_emb)
+    tgt_emb = self.pos_decoder(tgt_emb)
+
+    output = self.transformer(
+        src_emb,
+        tgt_emb,
+        tgt_mask=tgt_mask,
+        src_key_padding_mask=src_padding_mask,
+        tgt_key_padding_mask=tgt_padding_mask,
+        memory_key_padding_mask=src_padding_mask
+    )
+
+    return self.fc_out(output)
