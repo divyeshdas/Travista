@@ -49,7 +49,7 @@ decoder2 = Decoder2(output_dim, emb_dim, hidden_dim, attention)
 attention_model = Seq2Seq2(encoder2, decoder2, device).to(device)
 
 attention_model.load_state_dict(
-    torch.load("experiments/lstm_attention_best.pth", map_location=device)
+    torch.load("experiments/lstm_attention_best-2.pth", map_location=device)
 )
 attention_model.eval()
 
