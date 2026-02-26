@@ -13,6 +13,7 @@ class NLLBTranslator:
 
     def translate(self, text, src_lang, tgt_lang):
 
+        # Set source language
         self.tokenizer.src_lang = src_lang
 
         encoded = self.tokenizer(
@@ -20,9 +21,12 @@ class NLLBTranslator:
             return_tensors="pt"
         ).to(self.device)
 
+        # Correct way to get language token id
+        tgt_lang_id = self.tokenizer.convert_tokens_to_ids(tgt_lang)
+
         generated_tokens = self.model.generate(
             **encoded,
-            forced_bos_token_id=self.tokenizer.lang_code_to_id[tgt_lang],
+            forced_bos_token_id=tgt_lang_id,
             max_length=100
         )
 
